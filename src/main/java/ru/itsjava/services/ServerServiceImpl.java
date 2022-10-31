@@ -18,7 +18,7 @@ public class ServerServiceImpl implements ServerService, Observable{
         while (true) {
             Socket socket = serverSocket.accept();
             if (socket != null){
-                Thread thread = new Thread(new ClientRunnable(socket));
+                Thread thread = new Thread(new ClientRunnable(socket, this));
                 thread.start();
             }
         }

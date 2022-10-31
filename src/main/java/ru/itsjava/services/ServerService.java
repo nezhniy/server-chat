@@ -2,6 +2,6 @@ package ru.itsjava.services;
 
 import java.io.IOException;
 
-public interface ServerService {
+public interface ServerService extends Observable{
     void start() throws IOException;
 }
