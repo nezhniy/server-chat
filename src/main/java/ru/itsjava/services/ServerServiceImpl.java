@@ -15,12 +15,16 @@ public class ServerServiceImpl implements ServerService, Observable{
         ServerSocket serverSocket = new ServerSocket(PORT);
 
         System.out.println("== SERVER STARTS ==");
-        while (true) {
-            Socket socket = serverSocket.accept();
-            if (socket != null){
-                Thread thread = new Thread(new ClientRunnable(socket, this));
-                thread.start();
+        try {
+            while (true) {
+                Socket socket = serverSocket.accept();
+                if (socket != null) {
+                    Thread thread = new Thread(new ClientRunnable(socket, this));
+                    thread.start();
+                }
             }
+        } catch (IOException e){
+            serverSocket.close();
         }
     }
 
@@ -37,6 +41,16 @@ public class ServerServiceImpl implements ServerService, Observable{
     @Override
     public void notifyObserver(String message) {
         for (Observer observer: observers){
+            observer.notifyMe(message);
+        }
+    }
+
+    @Override
+    public void notifyObserverExpectMe(Observer observerEx, String message) {
+        for (Observer observer: observers){
+            if (observer == observerEx){
+                continue;
+            }
             observer.notifyMe(message);
         }
     }
