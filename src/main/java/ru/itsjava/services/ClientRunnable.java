@@ -63,12 +63,7 @@ public class ClientRunnable implements Runnable, Observer{
         try {
             clientWriter = new PrintWriter(socket.getOutputStream());
         } catch (IOException e) {
-            try {
-                clientWriter.close();
-                socket.close();
-            } catch (IOException ex) {
-                throw new NullPointerException();
-            }
+            e.printStackTrace();
         }
         if (clientWriter == null){
             clientWriter.close();
@@ -77,8 +72,9 @@ public class ClientRunnable implements Runnable, Observer{
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else {
+            clientWriter.println(message);
+            clientWriter.flush();
         }
-        clientWriter.println(message);
-        clientWriter.flush();
     }
 }
